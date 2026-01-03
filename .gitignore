@@ -4,3 +4,4 @@
 .crash.log
 terraform.tfvars
 *.tfvars
+.terraform.lock.hcl
