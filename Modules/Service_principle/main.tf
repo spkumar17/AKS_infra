@@ -2,7 +2,7 @@
 
 data "azuread_client_config" "current" {}
 # tenant_id
-# client_id
+# client_id  
 # object_id
 
 data "azurerm_client_config" "current" {}
@@ -39,6 +39,8 @@ resource "azuread_service_principal_password" "sp_passw" {
     }
 }
 
+
+# Because role assignment is a resource-level authorization, and only Azure Resource Manager owns and enforces resource permissions.
 
 resource "random_uuid" "role_assign_id" {}
 

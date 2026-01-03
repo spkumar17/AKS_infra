@@ -20,31 +20,30 @@ module "VNet" {
 
 }
 
-module "Network_Watcher" {
-  source              = "./Modules/Network_watcher"
-  resource_group_name = module.ResourceGroup.resource_group_name
-  location            = "centralindia"
-  Public_nsg_id       = module.VNet.Public_nsg_id
-  Private_nsg_id      = module.VNet.Private_nsg_id
-  vnet_id             = module.VNet.vnet_id
-  storage_account_id  = module.storageaccount.storage_account_id
-  depends_on = [module.storageaccount, module.VNet, module.ResourceGroup]
-
-}
+# module "Network_Watcher" {
+#   source              = "./Modules/Network_watcher"
+#   resource_group_name = module.ResourceGroup.resource_group_name
+#   location            = "centralindia"
+#   Public_nsg_id       = module.VNet.Public_nsg_id
+#   Private_nsg_id      = module.VNet.Private_nsg_id
+#   vnet_id             = module.VNet.vnet_id
+#   storage_account_id  = module.storageaccount.storage_account_id
+#   depends_on          = [module.storageaccount, module.VNet, module.ResourceGroup]
+# }
 
 module "storageaccount" {
-  source              = "./Modules/Storageaccount"
-  resource_group_name = module.ResourceGroup.resource_group_name
-  storage_account_name = "flownt000912"
-  location            = "centralindia"
-  depends_on = [module.ResourceGroup]
+  source               = "./Modules/Storageaccount"
+  resource_group_name  = module.ResourceGroup.resource_group_name
+  storage_account_name = "flownt006912"
+  location             = "centralindia"
+  depends_on           = [module.ResourceGroup]
 
 }
 module "Service_principle" {
   source               = "./Modules/Service_principle"
   role_definition_name = "Contributor"
   depends_on           = [module.ResourceGroup]
-  
+
 }
 
 module "keyvault" {

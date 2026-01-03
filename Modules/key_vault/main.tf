@@ -27,9 +27,10 @@ resource "azurerm_key_vault" "aks_key_vault" {
   }
 }
 
-resource "azurerm_key_vault_secret" "example" {
+resource "azurerm_key_vault_secret" "service_principal_secret" {
   name         = var.service_principal_client_id
   value        = var.service_principal_secret_value
   key_vault_id = azurerm_key_vault.aks_key_vault.id
+  depends_on = [ azurerm_key_vault.aks_key_vault ]
 }
 
