@@ -56,3 +56,15 @@ module "keyvault" {
   depends_on                     = [module.ResourceGroup, module.Service_principle]
 
 }
+
+module "AKS" {
+  source                      = "./Modules/AKS"
+  resource_group_name         = module.ResourceGroup.resource_group_name
+  location                    = "centralindia"
+  aks_cluster_name            = "aks-cluster"
+  nodename                    = "agentpool"
+  environment                 = "Development"
+  vnet_subnet_id              = module.VNet.private_subnet_ids
+  depends_on                  = [module.VNet, module.Service_principle, module.keyvault, module.ResourceGroup]
+  
+}
