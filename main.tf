@@ -65,6 +65,7 @@ module "AKS" {
   nodename                    = "agentpool"
   environment                 = "Development"
   vnet_subnet_id              = module.VNet.private_subnet_ids
+  resource_group_id           = module.ResourceGroup.resource_group_id
   depends_on                  = [module.VNet, module.Service_principle, module.keyvault, module.ResourceGroup]
   
 }

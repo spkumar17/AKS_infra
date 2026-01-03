@@ -26,7 +26,7 @@ variable "nodename" {
 
 variable "vnet_subnet_id" {
     description = "The ID of the subnet for the AKS cluster"
-    type        = string
+    type        = list(string)
 }
 
 variable "resource_group_id" {
