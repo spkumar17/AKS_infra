@@ -47,6 +47,7 @@ module "Service_principle" {
 }
 
 module "keyvault" {
+  key_vault_name                 = "kv-aks-23456"
   source                         = "./Modules/key_vault"
   resource_group_name            = module.ResourceGroup.resource_group_name
   location                       = "centralindia"
@@ -54,18 +55,29 @@ module "keyvault" {
   service_principal_object_id    = module.Service_principle.service_principal_object_id
   service_principal_client_id    = module.Service_principle.service_principal_client_id
   depends_on                     = [module.ResourceGroup, module.Service_principle]
+  tenant_id                      = "bcd0c787-8e49-454f-acfb-b0327c1a7fff"
+  terraform_sp_object_id         = "ba60bf88-ad74-48ff-9fa1-36c9b0b75d7e"
+
 
 }
 
 module "AKS" {
-  source                      = "./Modules/AKS"
-  resource_group_name         = module.ResourceGroup.resource_group_name
-  location                    = "centralindia"
-  aks_cluster_name            = "aks-cluster"
-  nodename                    = "agentpool"
-  environment                 = "Development"
-  vnet_subnet_id              = module.VNet.private_subnet_ids
-  resource_group_id           = module.ResourceGroup.resource_group_id
-  depends_on                  = [module.VNet, module.Service_principle, module.keyvault, module.ResourceGroup]
-  
+  source              = "./Modules/AKS"
+  resource_group_name = module.ResourceGroup.resource_group_name
+  location            = "centralindia"
+  aks_cluster_name    = "aks-cluster"
+  nodename            = "agentpool"
+  environment         = "Development"
+  vnet_subnet_id      = module.VNet.private_subnet_ids
+  resource_group_id   = module.ResourceGroup.resource_group_id
+  depends_on          = [module.VNet, module.Service_principle, module.keyvault, module.ResourceGroup]
+
+}
+
+module "Jumphost" {
+  source               = "./Modules/Jumphost"
+  resource_group_name  = module.ResourceGroup.resource_group_name
+  location             = "centralindia"
+  jump_subnet_id       = module.VNet.public_subnet_ids
+  depends_on           = [module.VNet, module.ResourceGroup]
 }

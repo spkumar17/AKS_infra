@@ -2,7 +2,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.aks_cluster_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  dns_prefix_private_cluster = "aksdns_private"
+  dns_prefix = "aksdnsprivate"
   
 
   private_cluster_enabled = true
@@ -12,13 +12,20 @@ resource "azurerm_kubernetes_cluster" "aks" {
     auto_scaling_enabled = true
     min_count           = 1
     max_count           = 3
-    vm_size    = "Standard_DS2_v2"
-    type       = "System"
+    vm_size    = "Standard_B2s"
+    type       = "VirtualMachineScaleSets"
     os_disk_size_gb = 30
     vnet_subnet_id    = var.vnet_subnet_id[0]
   }
+
+  # Network profile configuration
+  # Refer: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster#network_profile
+  # Explicitly set service CIDR to avoid overlap with VNet/subnet IP ranges (AKS defaults to 10.0.0.0/16)
+
   network_profile {
-    network_plugin = "azure"
+  network_plugin = "azure"
+  service_cidr   = var.service_cidr
+  dns_service_ip = var.dns_service_ip
   }
 
   identity {
@@ -35,7 +42,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_np" {
   name                  = "usernp"
   kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
 
-  vm_size    = "Standard_DS3_v2"
+  vm_size    = "Standard_B2s"
   auto_scaling_enabled  = true
   min_count           = 1
   max_count           = 3

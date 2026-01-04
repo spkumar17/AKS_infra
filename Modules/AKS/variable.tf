@@ -33,3 +33,17 @@ variable "resource_group_id" {
     description = "The ID of the resource group"
     type        = string
 }
+
+
+variable "service_cidr" {
+    description = "The service CIDR for the AKS cluster"
+    type        = string
+    default     = "10.240.0.0/16"
+
+}
+
+variable "dns_service_ip" {
+    description = "The DNS service IP for the AKS cluster"
+    type        = string
+    default     = "10.240.0.10" 
+}

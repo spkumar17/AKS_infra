@@ -36,3 +36,13 @@ variable "service_principal_object_id" {
     description = "The object ID of the Service Principal to grant access to Key Vault."
     type        = string
 }
+
+variable "tenant_id" {
+    description = "The tenant ID for the Azure Active Directory."
+    type        = string
+}
+
+variable "terraform_sp_object_id" {
+    description = "The object ID of the Terraform Service Principal for Key Vault access."
+    type        = string
+}
