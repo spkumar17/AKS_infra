@@ -75,9 +75,12 @@ module "AKS" {
 }
 
 module "Jumphost" {
-  source               = "./Modules/Jumphost"
-  resource_group_name  = module.ResourceGroup.resource_group_name
-  location             = "centralindia"
-  jump_subnet_id       = module.VNet.public_subnet_ids
-  depends_on           = [module.VNet, module.ResourceGroup]
+  source              = "./Modules/Jumphost"
+  resource_group_name = module.ResourceGroup.resource_group_name
+  location            = "centralindia"
+  jump_subnet_id      = module.VNet.public_subnet_ids
+  depends_on          = [module.VNet, module.ResourceGroup]
+  vnet_name           = module.VNet.vnet_name
+  address_prefixes    = ["10.0.255.0/26"]
+
 }

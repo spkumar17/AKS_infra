@@ -1,6 +1,6 @@
 
 resource "azurerm_virtual_network" "AKS_VNet" {
-  name                = "example-network"
+  name                = "aks-network"
   location            = var.location
   resource_group_name = var.resource_group_name
   address_space       = var.address_space_Vnet

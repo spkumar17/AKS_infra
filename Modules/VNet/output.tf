@@ -21,3 +21,7 @@ output "Public_nsg_id" {
 output "Private_nsg_id" {
     value = azurerm_network_security_group.Private_NSG.id
 }
+output "vnet_name" {
+    value = azurerm_virtual_network.AKS_VNet.name 
+}
+
