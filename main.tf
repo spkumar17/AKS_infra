@@ -81,6 +81,7 @@ module "Jumphost" {
   jump_subnet_id      = module.VNet.public_subnet_ids
   depends_on          = [module.VNet, module.ResourceGroup]
   vnet_name           = module.VNet.vnet_name
+  aks_cluster_id      = module.AKS.aks_cluster_id
   address_prefixes    = ["10.0.255.0/26"]
 
 }
