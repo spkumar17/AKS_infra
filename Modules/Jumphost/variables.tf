@@ -15,4 +15,4 @@ variable "address_prefixes" {
   
 }
 
-variable "aks_id" {}
+variable "aks_cluster_id" {}
