@@ -3,8 +3,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location            = var.location
   resource_group_name = var.resource_group_name
   dns_prefix = "aksdnsprivate"
-  
-
+  oidc_issuer_enabled       = true
+  workload_identity_enabled = true
   private_cluster_enabled = true
   private_dns_zone_id      = "System"
   default_node_pool {
