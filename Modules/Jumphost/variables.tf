@@ -14,3 +14,5 @@ variable "address_prefixes" {
     type        = list(string)
   
 }
+
+variable "aks_id" {}
