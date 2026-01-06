@@ -10,6 +10,12 @@ resource "azurerm_network_interface" "jump_nic" {
   }
 }
 
+resource "azurerm_user_assigned_identity" "shared_identity" {
+  name                = "shared-mi"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+}
+
 resource "azurerm_linux_virtual_machine" "jump_host" {
   name                = "jump-host"
   location            = var.location
@@ -24,6 +30,10 @@ resource "azurerm_linux_virtual_machine" "jump_host" {
   admin_ssh_key {
     username   = "azureuser"
     public_key = file("C:/Users/prasa/azurek8s.pub")
+  }
+ identity {
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.shared_identity.id]
   }
 
   os_disk {
@@ -42,6 +52,13 @@ resource "azurerm_linux_virtual_machine" "jump_host" {
     purpose = "aks-jump-host"
   }
 }
+
+resource "azurerm_role_assignment" "jumpbox_aks_access" {
+  principal_id         = azurerm_linux_virtual_machine.jump_host.identity[0].principal_id
+  role_definition_name = "Azure Kubernetes Service Cluster User Role"
+  scope                = var.aks_id
+}
+
 
 # resource "null_resource" "install_kubectl" {
 #   depends_on = [
