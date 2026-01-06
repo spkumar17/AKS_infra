@@ -35,6 +35,9 @@ resource "azurerm_linux_virtual_machine" "jump_host" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.shared_identity.id]
   }
+# identity {
+#   type         = "SystemAssigned"
+#  }
 
   os_disk {
     caching              = "ReadWrite"
@@ -54,7 +57,7 @@ resource "azurerm_linux_virtual_machine" "jump_host" {
 }
 
 resource "azurerm_role_assignment" "jumpbox_aks_access" {
-  principal_id         = azurerm_linux_virtual_machine.jump_host.identity[0].principal_id
+  principal_id         = azurerm_user_assigned_identity.shared_identity.principal_id
   role_definition_name = "Azure Kubernetes Service Cluster User Role"
   scope                = var.aks_cluster_id
 }
